@@ -2,7 +2,6 @@ import {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import Orphanage from '../model/orphanages';
 import orphanages_view from '../views/orphanages_view';
-import OrphanageView from '../views/orphanages_view'
 import * as Yup from 'yup';
 
 export default {
