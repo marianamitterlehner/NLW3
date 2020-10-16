@@ -8,7 +8,7 @@
 
 #page-map aside{
     width: 448px;
-    background: linear-gradient(329.54deg, #29B6D1 0%, #00C7C7 100%);
+    background: linear-gradient(329.54deg, #29B6D1 0%, #00C7C7 10);
     padding: 88px;
 
     display: flex;
@@ -97,3 +97,4 @@
 #page-map .map-popup .leaflet-popup-tip-container {
     display: none;
 }
+
