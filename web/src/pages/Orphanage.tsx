@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiClock, FiInfo } from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-import {Link, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 import '../styles/pages/orphanage.css';
 import Sidebar from "../components/Sidebar";
@@ -16,7 +16,7 @@ interface Orphanage {
   about:string;
   instructions: string;
   opening_hours: string;
-  open_on_weekend: string;
+  open_on_weekends: string;
   images: Array<{
     id:number;
     url: string;
@@ -24,22 +24,22 @@ interface Orphanage {
   whatapp:number;
 }
 
-interface Params {
+interface OrphanageParams {
   id:string;
 }
 
 export default function Orphanage() {
 
-  const param = useParams<Params>();
+  const params = useParams<OrphanageParams>();
   
-  const [activeImage, setActiveImage] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [orphanage, setOrphanage] = useState<Orphanage>();
 
   useEffect(() => {
-      api.get(`orphanages/${param.id}`).then(response => {
+      api.get(`orphanages/${params.id}`).then(response => {
           setOrphanage(response.data);
       })
-  }, [param.id]); //ao id mudar, faz com que a function execute novamente
+  }, [params.id]); //ao id mudar, faz com que a function execute novamente
 
   if (!orphanage) {
     return <p>Carregando ...</p> //refazer
@@ -52,22 +52,23 @@ export default function Orphanage() {
 
       <main>
         <div className="orphanage-details">
-            <img src={orphanage.images[activeImage].url} alt={orphanage.name} />
+          <img src={orphanage.images[activeImageIndex].url} alt={orphanage.name} />
 
           <div className="images">
 
             {orphanage.images.map((image, index) => {
               return(
-                <button type="button" 
-                key={image.id} 
-                className={ activeImage === index ? 'active' : ''}
-                onClick = {() => {
-                  setActiveImage(index);
-                }}
-                 >
-                  <img src= {image.url} alt= {orphanage.name} />
+                <button 
+                    key={image.id}
+                    className={activeImageIndex === index ? 'active' : ''}
+                    type="button"
+                    onClick={() => {
+                      setActiveImageIndex(index);
+                  }}
+                >
+                    <img src={image.url} alt={orphanage.name} />
                 </button>
-              )
+              );
             })}
 
           </div>
@@ -107,15 +108,14 @@ export default function Orphanage() {
                 Segunda à Sexta <br />
                 {orphanage.opening_hours}
               </div>
-              { orphanage.open_on_weekend ? (
+              { orphanage.open_on_weekends ? (
                   <div className="open-on-weekends">
                     <FiInfo size={32} color="#39CC83" />
                       Atendemos <br />
                       fim de semana
-                  </div>
-                          
+                  </div>        
               ) : (
-                <div className="open-on-weekends-dont-open">
+                <div className="open-on-weekends dont-open">
                   <FiInfo size={32} color="#FF669D" />
                   Não atendemos <br />
                   fim de semana

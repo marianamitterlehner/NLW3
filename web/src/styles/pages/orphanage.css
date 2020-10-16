@@ -141,7 +141,7 @@
 }
 
 
-.orphanage-details .orphanage-details-content .open-details div.open-on-weekends-dont-open {
+.orphanage-details .orphanage-details-content .open-details div.open-on-weekends.dont-open {
   background: linear-gradient(154.16deg, #FDF0F5 7.85%, #FFFFFF 91.03%);
   border: 1px solid #FFBCD4;
   color: #FF669D;

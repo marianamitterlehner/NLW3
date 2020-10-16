@@ -1,54 +1,55 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
+import { useHistory } from "react-router-dom";
 
 import { FiPlus } from "react-icons/fi";
 
-
 import '../styles/pages/create-orphanage.css';
+
 import Sidebar from "../components/Sidebar";
 import mapIcon from "../utils/mapIcon";
 import api from "../services/api";
-import { useHistory } from "react-router-dom";
-
 
 export default function CreateOrphanage() {
 
     const history = useHistory();
 
+    const [position, setPosition] = useState({latitude:0, longetude:0});
+    
     const [name, setName] = useState('');
     const [about, setAbout] = useState('');
     const [instructions, setInstructions] = useState('');
     const [opening_hours, setOpeningHours] = useState('');
-    const [position, setPosition] = useState({latitude:0, longetude:0});
     const [open_on_weekends, setOpenOnWeekends] = useState(true);
-    const [files, setFiles] = useState <File[]>([]);
-    const [preview, setPreview] = useState <string[]>([]);
+    const [images, setImages] = useState <File[]>([]);
+    const [previewImages, setPreviewImages] = useState <string[]>([]);
 
   function handleMapClick(event:LeafletMouseEvent){
       const { lat, lng } = event.latlng;
+
       setPosition ({
         latitude: lat,
         longetude: lng
-      })
+      });
   }
 
-  function handleFile(event: ChangeEvent<HTMLInputElement>) {
+  function handleSelectImages(event: ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) {
       return;
     }
-    const images = Array.from(event.target.files);
-    setFiles(images);
-    const imagesPreview = images.map(image => {
-      return URL.createObjectURL(image)
+    const selectedImages = Array.from(event.target.files);
+    setImages(selectedImages);
+    const selectedImagesPreview = selectedImages.map(image => {
+      return URL.createObjectURL(image);
     });
 
-    setPreview(imagesPreview);
+    setPreviewImages(selectedImagesPreview);
   }
 
   async function handleSubmit(event:FormEvent) {
     event.preventDefault();
-      const { latitude, longetude } = position
+      const { latitude, longetude } = position;
 
       const data = new FormData();
 
@@ -59,8 +60,8 @@ export default function CreateOrphanage() {
       data.append('instructions', instructions);
       data.append('opening_hours', opening_hours);
       data.append('open_on_weekends', String(open_on_weekends));
-      files.forEach(image => {
-        data.append('images', String(files));
+      images.forEach(image => {
+        data.append('images', image);
       })
 
       await api.post('orphanages', data);
@@ -106,14 +107,14 @@ export default function CreateOrphanage() {
 
             <div className="input-block">
               <label htmlFor="about">Sobre <span>Máximo de 300 caracteres</span></label>
-              <textarea id="about" maxLength={300} value={about} onChange={e => setAbout(e.target.value)} />
+              <textarea id="nome" maxLength={300} value={about} onChange={e => setAbout(e.target.value)} />
             </div>
 
             <div className="input-block">
               <label htmlFor="images">Fotos</label>
 
               <div className="images-container">
-                {preview.map(image => {
+                {previewImages.map(image => {
                   return(
                     <img key={image} src={image} alt={name}/>
                   )
@@ -123,9 +124,9 @@ export default function CreateOrphanage() {
                 <label htmlFor="image[]" className="new-image">
                   <FiPlus size={24} color="#15b6d6" />
                 </label>
-                <input multiple onChange={handleFile} type="file" id="image[]" />
               </div>
-
+              
+              <input multiple onChange={handleSelectImages} type="file" id="image[]" />
             </div>
           </fieldset>
 
