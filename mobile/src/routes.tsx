@@ -24,16 +24,24 @@ export default function Routes(){
                     component={OrphanagesDetails}
                     options={{
                         headerShown: true,
-                        header: () => <Header title={'Orphanage'} />
+                        header: () => <Header showCancel={false} title={'Orphanage'} />
                     }}
                 />
                 <Screen 
                     name="OrphanagesData" 
                     component={OrphanagesData}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header title={'Selecione no mapa'} />
+                    }}
                 />
                 <Screen 
                     name="SelectMapPosition" 
                     component={SelectMapPosition}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header title={'Informe os dados'} />
+                    }}
                 />
             </Navigator>
         </NavigationContainer>
