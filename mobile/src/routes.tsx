@@ -5,7 +5,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 const {Navigator, Screen} = createStackNavigator();
 
 import OrphanagesMap from './pages/OrphanagesMap';
-import OrphanagesDetails from './pages/OrphanagesDetails';
+import OrphanagesDetails from './pages/OrphanageDetails';
+import OrphanagesData from './pages/CreateOrphanages/OrphanageData';
+import SelectMapPosition from './pages/CreateOrphanages/SelectMapPosition';
+
 
 export default function Routes(){
     return(
@@ -13,6 +16,8 @@ export default function Routes(){
             <Navigator screenOptions={{headerShown:false}}>
                 <Screen name="OrphanagesMap" component={OrphanagesMap}/>
                 <Screen name="OrphanagesDetails" component={OrphanagesDetails}/>
+                <Screen name="OrphanagesData" component={OrphanagesData}/>
+                <Screen name="SelectMapPosition" component={SelectMapPosition}/>
             </Navigator>
         </NavigationContainer>
     )
